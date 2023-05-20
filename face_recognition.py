@@ -1,3 +1,4 @@
+# ===== IMPORTS =====
 import cv2
 import threading
 import dlib
@@ -14,15 +15,16 @@ import urllib.request
 import numpy as np
 import time
 
-
+# ===== INITIALIZATION 1 =====
 detector = dlib.get_frontal_face_detector()
+
 # Get face landmarks
 predictor = dlib.shape_predictor("data/data_dlib/shape_predictor_68_face_landmarks.dat")
 
 # Dlib Resnet Use Dlib resnet50 model to get 128D face descriptor
 face_reco_model = dlib.face_recognition_model_v1("data/data_dlib/dlib_face_recognition_resnet_model_v1.dat")
 
-
+# ===== INITIALIZATION 2 =====
 font = cv2.FONT_ITALIC
 frame_time = 0
 frame_start_time = 0
