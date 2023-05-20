@@ -1,131 +1,145 @@
-Face recognition from camera with Dlib
-######################################
 
-Introduction
-************
+# Face recognition from camera with Dlib
 
-Detect and recognize single or multi faces from camera;
+* Project Goal: The goal of this project is to develop a system that can recognize faces from multiple cameras in real time.
 
-[1] Face register GUI with Tkinter, support setting (chinese) name when registering
+* Project Approach: The system will use the Dlib library to detect and recognize faces. Dlib is a C++ library with Python bindings that provides a number of tools for computer vision, including face detection and recognition.
 
-### images-01
+* Project Implementation: The system will be implemented in Python. The following steps will be involved in the implementation:
 
-[2] Simple face register GUI with OpenCV, tkinter not needed and cannot set name
+      1. Collect a dataset of face images. The dataset should include images of different people from different angles and lighting conditions.
 
-### images-02
+      2. Train a face recognition model. The face recognition model will be trained on the collected dataset of face images.
 
-[3] Too close to the camera, or face ROI out of camera area, will have "OUT OF RANGE" warning.
+      3. Implement the face detection and recognition algorithm. The face detection and recognition algorithm will be implemented using the Dlib library.
+## Demo/ Screenshots
+# TO BE ADDED
+### About Accuracy
+   - When using a distance threshold of `0.6`, the dlib model obtains an accuracy of `99.38%` on the standard LFW face recognition benchmark.
 
-### images-03
-
-[4] Generate face database from images captured
-[5] Face recognizer
+### About algorithm
+   - Residual Neural Network/ CNN
+   - This model is a ResNet network with 29 conv layers. 
    
-
-face_reco_from_camera_ot.py. Use OT to instead of re-reco for every frame to improve FPS:
-
-### images-03
+It's essentially a version of the ResNet-34 network from the paper Deep Residual Learning for Image Recognition by He, Zhang, Ren, and Sun with a few layers removed and the number of filters per layer reduced by half.
 
 
-About accuracy:
 
-* When using a distance threshold of ``0.6``, the dlib model obtains an accuracy of ``99.38%`` on the standard LFW face recognition benchmark.
+## Steps 
 
-About algorithm
+1. Git clone source code
+```bash
+    git clone https://github.com/coneypo/Dlib_face_recognition_from_camera
+```
 
-* Residual Neural Network/ CNN
+2. Install some python packages needed
+```bash
+  pip install -r requirements.txt
+```
 
-* This model is a ResNet network with 29 conv layers.
-It's essentially a version of the ResNet-34 network from the paper Deep Residual Learning for Image Recognition
-by He, Zhang, Ren, and Sun with a few layers removed and the number of filters per layer reduced by half.
+3. Register faces with Tkinter GUI
+```bash
+  # Install Tkinter
+  sudo apt-get install python3-tk python3-pil python3-pil.imagetk
 
-Overview
-********
+  python3 get_faces_from_camera_tkinter.py
+```
 
-(no OT) / 
-Design of this repo, do detection and recognization for every frame:
+4. Register faces with OpenCV GUI, same with above step
+```bash
+  python3 get_face_from_camera.pyt
+```
 
-.. image:: introduction/overview.png
+5.  Features extraction and save into `features_all.csv`
 
-(with OT) / OT used:
+```bash
+  python3 features_extraction_to_csv.py
+```
 
-.. image:: introduction/overview_with_ot.png
+6.  Real-time face recognition
+```bash
+  python3 face_reco_from_camera.py
+```
 
+## About Source Code
+- Code structure:
 
-Use OT can save the time for face descriptor computation to improve FPS. 
+```
+.
+├── get_faces_from_camera.py                        # Step 1. Face register GUI with OpenCV
+├── get_faces_from_camera_tkinter.py                # Step 1. Face register GUI with Tkinter
+├── features_extraction_to_csv.py                   # Step 2. Feature extraction
+├── face_reco_from_camera.py                        # Step 3. Face recognizer
+├── face_reco_from_camera_single_face.py            # Step 3. Face recognizer for single person
+├── face_reco_from_camera_ot.py                     # Step 3. Face recognizer with OT
+├── face_descriptor_from_camera.py                  # Face descriptor computation
+├── how_to_use_camera.py                            # Use the default camera by opencv
+├── data
+│   ├── data_dlib                                   # Dlib's model
+│   │   ├── dlib_face_recognition_resnet_model_v1.dat
+│   │   └── shape_predictor_68_face_landmarks.dat
+│   ├── data_faces_from_camera                      # Face images captured from camera (will generate after step 1)
+│   │   ├── person_1
+│   │   │   ├── img_face_1.jpg
+│   │   │   └── img_face_2.jpg
+│   │   └── person_2
+│   │       └── img_face_1.jpg
+│   │       └── img_face_2.jpg
+│   └── features_all.csv                            # CSV to save all the features of known faces (will generate after step 2)
+├── README.rst
+└── requirements.txt                                # Some python packages needed
+```
+# Dlib related functions used in this repo:
 
-Steps
-*****
+1. Dlib (based on HOG), output: `<class 'dlib.dlib.rectangles'>` / Dlib frontal face detector.
 
-## Git clone source code
+```
+detector = dlib.get_frontal_face_detector()
+faces = detector(img_gray, 0)
+```
 
-      git clone https://github.com/coneypo/Dlib_face_recognition_from_camera
+2. Dlib landmark, output: `<class 'dlib.dlib.full_object_detection'>` / Dlib face landmark predictor, will use shape_predictor_68_face_landmarks.dat
 
-## Install some python packages needed
+```
+# This is trained on the ibug 300-W dataset (https://ibug.doc.ic.ac.uk/resources/facial-point-annotations/)
+# Also note that this model file is designed for use with dlib's HOG face detector.
+# That is, it expects the bounding boxes from the face detector to be aligned a certain way,
+the way dlib's HOG face detector does it.
+# It won't work as well when used with a face detector that produces differently aligned boxes,
+# such as the CNN based mmod_human_face_detector.dat face detector.
 
-      pip install -r requirements.txt
+predictor = dlib.shape_predictor("data/data_dlib/shape_predictor_68_face_landmarks.dat")
+shape = predictor(img_rd, faces[i])
+```
+3. Face recognition model, the object maps human faces into 128D vectors
 
-## Tkinter GUI / Register faces with Tkinter GUI
-      # Install Tkinter
-      sudo apt-get install python3-tk python3-pil python3-pil.imagetk
+```
+face_rec = dlib.face_recognition_model_v1("data/data_dlib/dlib_face_recognition_resnet_model_v1.dat")
 
-      python3 get_faces_from_camera_tkinter.py
+```
+## Source Code
+1. `face_register.py`
 
-## OpenCV GUI / Register faces with OpenCV GUI, same with above step
+Face information collection and entry / Face register with OpenCV GUI
 
-      python3 get_face_from_camera.py
+- Please note that when storing face pictures, the rectangular frame should not exceed the range of the camera, otherwise it cannot be saved locally.
 
-## Features extraction and save into ``features_all.csv``
+- There will be an "out of range" reminder if it exceeds;
 
-      python3 features_extraction_to_csv.py
+2. `face_train.py`
+From the image file saved in the previous step, extract the face data and save it in CSV / Extract features from face images saved.
 
-## Real-time face recognition
+  - Will generate a store of all feature face data `features_all.csv`
+  - Size: n*129 , n means n faces you registered and 129 means face name + 128D features of this face.
 
-      python3 face_reco_from_camera.py
+3. `face_recognition.py`
 
-## Real-time face recognition (Better FPS compared with ``face_reco_from_camera.py``)
+This step will call the camera for real-time face recognition; / This part will implement real-time face recognition;
 
-      python3 face_reco_from_camera_single_face.py
+  - Compare the captured face data with the previously stored face data to calculate the Euclidean distance, so as to determine whether they are the same person.
+  - Compare the faces captured from camera with the faces you have registered which are saved in features_all.csv.
+## More
 
-## Real-time face recognition with OT (Better FPS)
-
-      python3 face_reco_from_camera_ot.py
-
-About Source Code
-*****************
-Code structure:
-
-    ├── get_faces_from_camera.py        		# Step 1. Face register GUI with OpenCV
-    ├── get_faces_from_camera_tkinter.py                # Step 1. Face register GUI with Tkinter
-    ├── features_extraction_to_csv.py   		# Step 2. Feature extraction
-    ├── face_reco_from_camera.py        		# Step 3. Face recognizer
-    ├── face_reco_from_camera_single_face.py            # Step 3. Face recognizer for single person
-    ├── face_reco_from_camera_ot.py                     # Step 3. Face recognizer with OT
-    ├── face_descriptor_from_camera.py  		# Face descriptor computation
-    ├── how_to_use_camera.py            		# Use the default camera by opencv
-    ├── data
-    │   ├── data_dlib        			        # Dlib's model
-    │   │   ├── dlib_face_recognition_resnet_model_v1.dat
-    │   │   └── shape_predictor_68_face_landmarks.dat
-    │   ├── data_faces_from_camera                      # Face images captured from camera (will generate after step 1)
-    │   │   ├── person_1
-    │   │   │   ├── img_face_1.jpg
-    │   │   │   └── img_face_2.jpg
-    │   │   └── person_2
-    │   │       └── img_face_1.jpg
-    │   │       └── img_face_2.jpg
-    │   └── features_all.csv            	        # CSV to save all the features of known faces (will generate after step 2)
-    ├── README.rst
-    └── requirements.txt                		# Some python packages needed
-
-# More 
-
-#. Dlib Python api You can refer to this link for more information of how to use dlib: http://dlib.net/python/index.html
-
-* Blog: https://www.cnblogs.com/AdaminXie/p/9010298.html
-
-* Blog: https://www.cnblogs.com/AdaminXie/p/13566269.html
-
-* Feel free to create issue or contribute PR for it:)
-
-Thanks for your support.
+  - Blog: https://www.cnblogs.com/AdaminXie/p/9010298.html
+  - The update on the OT part is in Blog: https://www.cnblogs.com/AdaminXie/p/13566269.html
+  - Feel free to create issue or contribute PR for it:)
