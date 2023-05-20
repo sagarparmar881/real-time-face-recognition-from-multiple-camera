@@ -331,16 +331,14 @@ def cam_preview(preview_name, cam_id):
 
                         # Add note on cv2 window
                         draw_note(img_rd)
-
                         # cv2.imwrite("debug/debug_" + str(frame_cnt) + ".png", img_rd) # Dump current frame image if needed
 
                 # Press 'q' to exit
-                if keyboard_key == ord('q'):
+                if keyboard_key == 113:
                     break
 
                 update_fps()
                 cv2.imshow(preview_name, img_rd)
-
                 logging.debug("Frame ends.")
         # ==== END =====
         if keyboard_key == 113:  # exit on "Q"
