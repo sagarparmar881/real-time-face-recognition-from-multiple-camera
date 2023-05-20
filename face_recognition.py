@@ -80,11 +80,26 @@ reclassify_interval = 10
 # ===== MAIN =====
 
 class CamThread(threading.Thread):
-    def __init__(self, previewname, camid):
+    def __init__(self, preview_name, cam_id):
         threading.Thread.__init__(self)
-        self.previewName = previewname
-        self.camID = camid
+        self.previewName = preview_name
+        self.camID = cam_id
 
     def run(self):
         print("Starting " + self.previewName)
         # camPreview(self.previewName, self.camID)
+
+
+# ===== THREADING =====
+
+# thread1 = CamThread(constants.camera_name_0, 0)
+# thread2 = CamThread(constants.camera_name_1, 1)
+#
+# thread1.start()
+# thread2.start()
+
+camera_feeds = [constants.camera_feed_0, constants.camera_feed_1]
+for each_camera in camera_feeds:
+    print(each_camera)
+    #thread = CamThread(constants.camera_name_0, 0)
+    #thread.start()
