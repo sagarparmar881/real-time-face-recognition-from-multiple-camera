@@ -11,6 +11,7 @@ import logging
 import threading
 import _thread as thread
 import cv2
+import datetime as dt
 import urllib.request
 import numpy as np
 import time
@@ -76,6 +77,9 @@ last_current_frame_centroid_e_distance = 0
 reclassify_interval_cnt = 0
 reclassify_interval = 10
 
+# Get Current Time
+current_time = dt.datetime.now()
+
 
 # ===== MAIN =====
 
@@ -88,6 +92,18 @@ class CamThread(threading.Thread):
     def run(self):
         print("Starting " + self.previewName)
         cam_preview(self.previewName, self.camID)
+
+
+def call_api(similar_person_num):
+    recognized_faces_data = {}
+    global current_time
+    delta = dt.datetime.now() - current_time
+    # Hits the API every x=(30) seconds
+    if delta.seconds >= 30:
+        recognized_faces_data['name'] = str(face_name_known_list[similar_person_num])
+        recognized_faces_data['time'] = str(dt.datetime.now())
+        print(recognized_faces_data)
+        current_time = dt.datetime.now()
 
 
 def update_fps():
@@ -190,12 +206,12 @@ def draw_note(img_rd):
 
     # for i in range(len(current_frame_face_name_list)):
     #     pass
-        # img_rd = cv2.putText(img_rd, "Face_" + str(i + 1), tuple(
-        #     [int(current_frame_face_centroid_list[i][0]), int(current_frame_face_centroid_list[i][1])]),
-        #                      font,
-        #                      0.8, (255, 190, 0),
-        #                      1,
-        #                      cv2.LINE_AA)
+    # img_rd = cv2.putText(img_rd, "Face_" + str(i + 1), tuple(
+    #     [int(current_frame_face_centroid_list[i][0]), int(current_frame_face_centroid_list[i][1])]),
+    #                      font,
+    #                      0.8, (255, 190, 0),
+    #                      1,
+    #                      cv2.LINE_AA)
 
 
 def cam_preview(preview_name, cam_id):
@@ -324,6 +340,7 @@ def cam_preview(preview_name, cam_id):
 
                             if min(current_frame_face_X_e_distance_list) < 0.4:
                                 current_frame_face_name_list[k] = face_name_known_list[similar_person_num]
+                                #call_api(similar_person_num)
                                 logging.debug("  Face recognition result: %s",
                                               face_name_known_list[similar_person_num])
                             else:
@@ -352,7 +369,7 @@ threads_count = 0
 
 cameras = {
     "camera_feed_0": 0,
-    #"camera_feed_1": "data/sample_videos/sample_video_01.mp4",
+    # "camera_feed_1": "data/sample_videos/sample_video_01.mp4",
 }
 for each_camera in cameras:
     # print(f'thread_{threads_count}')
