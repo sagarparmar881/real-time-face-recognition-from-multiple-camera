@@ -27,7 +27,10 @@ predictor = constants.predictor_file_path
 face_reco_model = constants.face_reco_model_file_path
 # face_reco_model = dlib.face_recognition_model_v1("data/data_dlib/dlib_face_recognition_resnet_model_v1.dat")
 
-
+'''
+Download Links for both files mentioned above: 
+https://drive.google.com/drive/folders/1iUx3uh9c9DTnBhEiNltXpYK1uhgEiim6?usp=share_link
+'''
 
 # ===== INITIALIZATION 2 =====
 font = cv2.FONT_ITALIC
