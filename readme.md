@@ -138,7 +138,7 @@ From the image file saved in the previous step, extract the face data and save i
 
 3. `face_recognition.py`
 
-This step will call the camera for real-time face recognition; / This part will implement real-time face recognition;
+This step will call the camera for real-time face recognition. This part will implement real-time face recognition;
 
   - Compare the captured face data with the previously stored face data to calculate the Euclidean distance, so as to determine whether they are the same person.
   - Compare the faces captured from camera with the faces you have registered which are saved in features_all.csv.
