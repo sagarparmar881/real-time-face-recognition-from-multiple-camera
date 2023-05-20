@@ -29,7 +29,7 @@ It's essentially a version of the ResNet-34 network from the paper Deep Residual
 
 1. Git clone source code
 ```bash
-    git clone https://github.com/coneypo/Dlib_face_recognition_from_camera
+  git clone https://github.com/coneypo/Dlib_face_recognition_from_camera
 ```
 
 2. Install some python packages needed
@@ -42,23 +42,18 @@ It's essentially a version of the ResNet-34 network from the paper Deep Residual
   # Install Tkinter
   sudo apt-get install python3-tk python3-pil python3-pil.imagetk
 
-  python3 get_faces_from_camera_tkinter.py
+  python3 face_register.py
 ```
 
-4. Register faces with OpenCV GUI, same with above step
+4. Features extraction and save into `features_all.csv`
+
 ```bash
-  python3 get_face_from_camera.pyt
+  python3 face_train.py
 ```
 
-5.  Features extraction and save into `features_all.csv`
-
+5. Real-time face recognition
 ```bash
-  python3 features_extraction_to_csv.py
-```
-
-6.  Real-time face recognition
-```bash
-  python3 face_reco_from_camera.py
+  python3 face_recognition.py
 ```
 
 ## About Source Code
