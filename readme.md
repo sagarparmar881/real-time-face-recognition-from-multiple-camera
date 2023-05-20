@@ -142,4 +142,3 @@ This step will call the camera for real-time face recognition; / This part will 
 
   - Blog: https://www.cnblogs.com/AdaminXie/p/9010298.html
   - The update on the OT part is in Blog: https://www.cnblogs.com/AdaminXie/p/13566269.html
-  - Feel free to create issue or contribute PR for it:)
