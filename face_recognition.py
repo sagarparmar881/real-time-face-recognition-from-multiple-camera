@@ -91,9 +91,8 @@ class CamThread(threading.Thread):
 
 
 # ===== THREADING =====
-
 for each_camera in constants.cameras:
-    #print(each_camera) # Camera Titles
-    #print(constants.cameras[each_camera]) # Camera Sources
-    thread = CamThread(each_camera, constants.cameras[each_camera])
+    # print(each_camera) # Camera Titles
+    # print(constants.cameras[each_camera]) # Camera Sources
+    thread = CamThread(str(each_camera), constants.cameras[each_camera])
     thread.start()
