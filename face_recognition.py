@@ -16,6 +16,7 @@ import urllib.request
 import numpy as np
 import time
 import constants
+import requests
 
 # ===== INITIALIZATION 1 =====
 detector = dlib.get_frontal_face_detector()
@@ -95,14 +96,18 @@ class CamThread(threading.Thread):
 
 
 def call_api(similar_person_num):
+    api_url = constants.api_end_point
+    # api_data = {'somekey': 'somevalue'}
     recognized_faces_data = {}
     global current_time
     delta = dt.datetime.now() - current_time
     # Hits the API every x=(30) seconds
-    if delta.seconds >= 30:
+    if delta.seconds >= 10 or True:
         recognized_faces_data['name'] = str(face_name_known_list[similar_person_num])
         recognized_faces_data['time'] = str(dt.datetime.now())
-        print(recognized_faces_data)
+        # print(recognized_faces_data)
+        api_data = recognized_faces_data
+        requests.post(api_url, json=api_data)
         current_time = dt.datetime.now()
 
 
@@ -226,7 +231,6 @@ def cam_preview(preview_name, cam_id):
 
     while rval:
         rval, frame = cam.read()
-        # ==== START =====
         if get_face_database():
             while cam.isOpened():
                 global frame_cnt, last_frame_face_cnt, current_frame_face_cnt, last_frame_face_name_list
@@ -340,7 +344,7 @@ def cam_preview(preview_name, cam_id):
 
                             if min(current_frame_face_X_e_distance_list) < 0.4:
                                 current_frame_face_name_list[k] = face_name_known_list[similar_person_num]
-                                #call_api(similar_person_num)
+                                call_api(similar_person_num)
                                 logging.debug("  Face recognition result: %s",
                                               face_name_known_list[similar_person_num])
                             else:
@@ -357,7 +361,7 @@ def cam_preview(preview_name, cam_id):
                 update_fps()
                 cv2.imshow(preview_name, img_rd)
                 logging.debug("Frame ends.")
-        # ==== END =====
+
         if keyboard_key == 113:  # exit on "Q"
             break
     cv2.destroyWindow(preview_name)
