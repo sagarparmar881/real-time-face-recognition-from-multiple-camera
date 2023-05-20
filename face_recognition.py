@@ -188,8 +188,8 @@ def draw_note(img_rd):
         img_rd, "Q: Quit", (10, 450), font, 0.6, (255, 255, 255), 1, cv2.LINE_AA
     )
 
-    for i in range(len(current_frame_face_name_list)):
-        pass
+    # for i in range(len(current_frame_face_name_list)):
+    #     pass
         # img_rd = cv2.putText(img_rd, "Face_" + str(i + 1), tuple(
         #     [int(current_frame_face_centroid_list[i][0]), int(current_frame_face_centroid_list[i][1])]),
         #                      font,
@@ -354,7 +354,7 @@ threads_count = 0
 
 cameras = {
     "camera_feed_0": 0,
-    "camera_feed_1": "data/sample_videos/sample_video_01.mp4",
+    #"camera_feed_1": "data/sample_videos/sample_video_01.mp4",
 }
 for each_camera in cameras:
     # print(f'thread_{threads_count}')
