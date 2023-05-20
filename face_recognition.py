@@ -75,3 +75,16 @@ last_current_frame_centroid_e_distance = 0
 #  "unknown" ,  reclassify_interval_cnt  reclassify_interval ,
 reclassify_interval_cnt = 0
 reclassify_interval = 10
+
+
+# ===== MAIN =====
+
+class CamThread(threading.Thread):
+    def __init__(self, previewname, camid):
+        threading.Thread.__init__(self)
+        self.previewName = previewname
+        self.camID = camid
+
+    def run(self):
+        print("Starting " + self.previewName)
+        # camPreview(self.previewName, self.camID)
