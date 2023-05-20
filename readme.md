@@ -31,7 +31,8 @@ It's essentially a version of the ResNet-34 network from the paper Deep Residual
 - dlib_face_recognition_resnet_model_v1.dat
 - shape_predictor_68_face_landmarks.dat
 
-#### Save them into this path `data\data_dlib`
+- #### Save these files into this path `data\data_dlib`
+- #### Verify file path into `constants.py`
 ```
 https://drive.google.com/drive/folders/1iUx3uh9c9DTnBhEiNltXpYK1uhgEiim6?usp=share_link
 ```
