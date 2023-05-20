@@ -92,14 +92,8 @@ class CamThread(threading.Thread):
 
 # ===== THREADING =====
 
-# thread1 = CamThread(constants.camera_name_0, 0)
-# thread2 = CamThread(constants.camera_name_1, 1)
-#
-# thread1.start()
-# thread2.start()
-
-camera_feeds = [constants.camera_feed_0, constants.camera_feed_1]
-for each_camera in camera_feeds:
-    print(each_camera)
-    #thread = CamThread(constants.camera_name_0, 0)
-    #thread.start()
+for each_camera in constants.cameras:
+    #print(each_camera) # Camera Titles
+    #print(constants.cameras[each_camera]) # Camera Sources
+    thread = CamThread(each_camera, constants.cameras[each_camera])
+    thread.start()
