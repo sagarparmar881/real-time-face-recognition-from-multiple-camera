@@ -349,7 +349,12 @@ def cam_preview(preview_name, cam_id):
 
 
 # ===== THREADING =====
-for each_camera in constants.cameras:
+
+cameras = {
+    "camera_feed_0": 0,
+    # "camera_feed_1": "sample_videos/sample_video_01.mp4",
+}
+for each_camera in cameras:
     # print(each_camera) # Camera Titles
     # print(constants.cameras[each_camera]) # Camera Sources
     thread = CamThread(str(each_camera), constants.cameras[each_camera])
