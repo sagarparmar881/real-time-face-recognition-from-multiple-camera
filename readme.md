@@ -1,5 +1,5 @@
 
-# Face Recognition from Multiple Camera with Dlib
+# Real-Time Face Recognition from Multiple Camera
 
 * Project Goal: The goal of this project is to develop a system that can recognize faces from multiple cameras in real time.
 
